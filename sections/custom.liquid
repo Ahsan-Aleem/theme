@@ -1,0 +1,92 @@
+<!-- custom-section.liquid -->
+
+{% schema %}
+{
+  "name": "Custom Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Welcome to Our Store!"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Section Subheading",
+      "default": "We offer the best products for your needs."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image Block",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Upload Image"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text Content",
+          "default": "This is a text block. You can add any content you like."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Section",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="custom-section">
+  <div class="container">
+    <!-- Section Heading and Subheading -->
+    <h2>{{ section.settings.heading }}</h2>
+    <p>{{ section.settings.subheading }}</p>
+
+    <!-- Loop through blocks (Image/Text) -->
+    <div class="custom-section__blocks">
+      {% for block in section.blocks %}
+        {% if block.type == 'image' %}
+          <div class="custom-section__block custom-section__block--image">
+            {% comment %} <img src="{{ block.settings.image | image_url }}" alt="Custom Image" /> {% endcomment %}
+          </div>
+        {% elsif block.type == 'text' %}
+          <div class="custom-section__block custom-section__block--text">
+            <p>{{ block.settings.text }}</p>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Optional Custom CSS for the Section -->
+<style>
+.custom-section {
+  text-align: center;
+  padding: 40px 20px;
+}
+.custom-section__blocks {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+.custom-section__block--image img {
+  max-width: 100%;
+  height: auto;
+}
+</style>
