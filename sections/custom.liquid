@@ -1,92 +1,146 @@
-<!-- custom-section.liquid -->
-
 {% schema %}
 {
-  "name": "Custom Section",
+  "name": "Hoverable Accordion Section",
   "settings": [
     {
+      "type": "header",
+      "content": "Hoverable Accordion Section Settings"
+    },
+    {
       "type": "text",
-      "id": "heading",
-      "label": "Section Heading",
-      "default": "Welcome to Our Store!"
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Our Portfolio"
+    },
+    {
+      "type": "image_picker",
+      "id": "portfolio_image_1",
+      "label": "Portfolio Image 1"
+    },
+    {
+      "type": "text",
+      "id": "portfolio_title_1",
+      "label": "Portfolio Title 1",
+      "default": "Vector Art"
     },
     {
       "type": "textarea",
-      "id": "subheading",
-      "label": "Section Subheading",
-      "default": "We offer the best products for your needs."
-    }
-  ],
-  "blocks": [
+      "id": "portfolio_description_1",
+      "label": "Portfolio Description 1",
+      "default": "Description of Vector Art"
+    },
     {
-      "type": "image",
-      "name": "Image Block",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Upload Image"
-        }
-      ]
+      "type": "image_picker",
+      "id": "portfolio_image_2",
+      "label": "Portfolio Image 2"
     },
     {
       "type": "text",
-      "name": "Text Block",
-      "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Text Content",
-          "default": "This is a text block. You can add any content you like."
-        }
-      ]
+      "id": "portfolio_title_2",
+      "label": "Portfolio Title 2",
+      "default": "Photography"
+    },
+    {
+      "type": "textarea",
+      "id": "portfolio_description_2",
+      "label": "Portfolio Description 2",
+      "default": "Description of Photography"
     }
   ],
   "presets": [
     {
-      "name": "Custom Section",
+      "name": "Default",
       "category": "Custom"
     }
   ]
 }
 {% endschema %}
 
-<section class="custom-section">
-  <div class="container">
-    <!-- Section Heading and Subheading -->
-    <h2>{{ section.settings.heading }}</h2>
-    <p>{{ section.settings.subheading }}</p>
-
-    <!-- Loop through blocks (Image/Text) -->
-    <div class="custom-section__blocks">
-      {% for block in section.blocks %}
-        {% if block.type == 'image' %}
-          <div class="custom-section__block custom-section__block--image">
-            {% comment %} <img src="{{ block.settings.image | image_url }}" alt="Custom Image" /> {% endcomment %}
-          </div>
-        {% elsif block.type == 'text' %}
-          <div class="custom-section__block custom-section__block--text">
-            <p>{{ block.settings.text }}</p>
-          </div>
-        {% endif %}
-      {% endfor %}
+<div class="hoverable-accordion-section">
+  <h2>{{ section.settings.section_title }}</h2>
+  <div class="accordion-container">
+    <!-- Accordion Item 1 -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <h3>{{ section.settings.portfolio_title_1 }}</h3>
+      </div>
+      <div class="accordion-body">
+        <img src="{{ section.settings.portfolio_image_1 | image_url: width: 800 }}" alt="{{ section.settings.portfolio_title_1 }}" height="" width="">
+        <p>{{ section.settings.portfolio_description_1 }}</p>
+      </div>
+    </div>
+    <!-- Accordion Item 2 -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        <h3>{{ section.settings.portfolio_title_2 }}</h3>
+      </div>
+      <div class="accordion-body">
+        <img src="{{ section.settings.portfolio_image_2 | image_url: width: 800 }}" alt="{{ section.settings.portfolio_title_2 }}" height="" width="">
+        <p>{{ section.settings.portfolio_description_2 }}</p>
+      </div>
     </div>
   </div>
-</section>
+</div>
 
-<!-- Optional Custom CSS for the Section -->
 <style>
-.custom-section {
-  text-align: center;
-  padding: 40px 20px;
+/* Styling for the Accordion Section */
+.hoverable-accordion-section {
+  font-family: 'Manrope', sans-serif;
 }
-.custom-section__blocks {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+
+.accordion-container {
+  margin: 20px 0;
 }
-.custom-section__block--image img {
+
+.accordion-item {
+  margin-bottom: 10px;
+  border: 1px solid var(--box-shadow-regular);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.accordion-header {
+  background-color: var(--color-primary);
+  color: var(--white);
+  cursor: pointer;
+  padding: 15px;
+  font-weight: bold;
+}
+
+.accordion-body {
+  display: none;
+  padding: 15px;
+  background-color: var(--bg-gray);
+}
+
+.accordion-body img {
   max-width: 100%;
   height: auto;
+  border-radius: 5px;
+}
+
+.accordion-header:hover {
+  background-color: var(--color-secondary);
 }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var headers = document.querySelectorAll('.accordion-header');
+
+  headers.forEach(function(header) {
+    header.addEventListener('click', function() {
+      var body = this.nextElementSibling;
+
+      if (body.style.display === 'block') {
+        body.style.display = 'none';
+      } else {
+        document.querySelectorAll('.accordion-body').forEach(function(item) {
+          item.style.display = 'none';
+        });
+        body.style.display = 'block';
+      }
+    });
+  });
+});
+</script>
