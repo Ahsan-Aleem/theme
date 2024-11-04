@@ -1,0 +1,51 @@
+ {% schema %}
+{
+  "name": "Full Screen Video",
+  "settings": [
+    {
+      "type": "text",
+      "id": "video_url_desktop",
+      "label": "Desktop Video URL",
+      "default": "https://cdn.shopify.com/videos/c/o/v/da9a54d454fb4428bbf8a0e6032fdad8.mp4"
+    },
+    {
+      "type": "text",
+      "id": "video_url_mobile",
+      "label": "Mobile Video URL",
+      "default": "https://cdn.shopify.com/videos/c/o/v/ea0ab716f6c4460ead63ee784335a7aa.mp4"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Full Screen Video",
+      "category": "Custom Sections"
+    }
+  ]
+}
+{% endschema %}
+
+<div id="videoContainer" style="position: relative; width: 100%; height: 50vh; overflow: hidden;">
+    <video id="fullScreenVideo" autoplay muted loop playsinline preload="auto" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+        Your browser does not support the video tag.
+    </video>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var videoElement = document.getElementById("fullScreenVideo");
+        var videoContainer = document.getElementById("videoContainer");
+        var isMobile = window.innerWidth <= 767; // Adjust the breakpoint as needed
+
+        // Set video source based on screen size
+        if (isMobile) {
+            videoElement.src = "{{ section.settings.video_url_mobile }}";
+            videoContainer.style.height = "80vh";
+        } else {
+            videoElement.src = "{{ section.settings.video_url_desktop }}";
+            videoContainer.style.height = "50vh";
+        }
+
+        // Load the video
+        videoElement.load();
+    });
+</script>
